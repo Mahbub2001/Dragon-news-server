@@ -1,47 +1,44 @@
-const express = require('express')
+const express = require("express");
 
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 
-app.get('/',(req,res)=>{
-    res.send("news api running");
+app.get("/", (req, res) => {
+  res.send("news api running");
 });
 
-const categories = require('./data/Categories.json')
-const news = require('./data/news.json')
+const categories = require("./data/Categories.json");
+const news = require("./data/news.json");
 
+app.get("/news-categories", (req, res) => {
+  res.send(categories);
+});
 
-app.get('/news-categories',(req,res)=>{
-    res.send(categories);
-})
-
-app.get('/category/:id',(req,res)=>{
-    const id = req.params.id;
-    if(id === '08'){
-        res.send(news)
-    }
-    else{
-        const category_news = news.filter(n=>n.category_id === id);
-        res.send(category_news);
-    }
-
-})
-
-app.get('/news',(req,res)=>{
+app.get("/category/:id", (req, res) => {
+  const id = req.params.id;
+  if (id === "08") {
     res.send(news);
-})
+  } else {
+    const category_news = news.filter((n) => n.category_id === id);
+    res.send(category_news);
+  }
+});
 
-app.get('/news/:id',(req,res)=>{
-    // console.log(req.params.id);
-    const id = req.params.id;
-    const selectedNews = news.find(n => n._id === id);
-    res.send(selectedNews);
-})
+app.get("/news", (req, res) => {
+  res.send(news);
+});
 
-app.listen(port,()=>{
-    console.log('Dragon news server running on port', port);
-})
+app.get("/news/:id", (req, res) => {
+  // console.log(req.params.id);
+  const id = req.params.id;
+  const selectedNews = news.find((n) => n._id === id);
+  res.send(selectedNews);
+});
+
+app.listen(port, () => {
+  console.log("Dragon news server running on port", port);
+});
